@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ToDoApp</title>
+  </head>
+  <body>
+    <a href="/"><button type="button">戻る</button></a>
+    
+    <form method="post" action="/add" th:object="${formModel}">
+      <div>
+        <p>タスク内容</p>
+        <textarea name="content" th:text="${formModel.content}" rows="4" cols="40"></textarea>
+      </div>
+
+      <div>
+        <p>期限</p>
+        <input type="datetime-local" name="limit" th:value="${limit_date}" />
+      </div>
+
+      <div>
+        <p>ステータス</p>
+        <select name="status">
+          <option th:each="status, statusArray : ${statusArray}" th:value="${statusArray.count}" 
+          th:text="${status}"></option>
+        </select>
+      </div>
+
+      <div>
+        <input type="submit" value="新規追加" />
+      </div>
+    </form>
+  </body>
+</html>
