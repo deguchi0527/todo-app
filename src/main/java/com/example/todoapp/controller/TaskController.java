@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -100,5 +101,21 @@ public class TaskController {
     mav.addObject("formModel", task);
 
     return mav;
+  }
+
+  // タスクの編集処理
+  @PutMapping("/update/{id}")
+  public ModelAndView updateContent(@PathVariable("id") Integer id, @ModelAttribute("formModel") Task task, 
+          @RequestParam("limit") String limit) {
+    // パラメータから送られてくる値をTimestamp型に変換するための処理
+    String limitDateFormat = limit + ":00";
+    String limitDateReplace = limitDateFormat.replace("T", " ");
+    Timestamp limitDate = Timestamp.valueOf(limitDateReplace);
+    // entityにlimit_dateをセット
+    task.setLimit_date(limitDate);
+    // タスクをテーブルに格納
+    taskService.saveTask(task);
+
+    return new ModelAndView("redirect:/");
   }
 }
