@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ToDoApp</title>
+  </head>
+  <body>
+    <a href="/"><button type="button">戻る</button></a>
+    
+    <form th:method="put" th:action="@{/update/{id}(id=${formModel.id})}" th:object="${formModel}">
+      <div>
+        <p>タスク内容</p>
+        <textarea name="content" th:text="${formModel.content}" rows="4" cols="40"></textarea>
+      </div>
+
+      <div>
+        <p>期限</p>
+        <input type="datetime-local" name="limit" th:value="${limitDate}" />
+      </div>
+
+      <div>
+       <input type="hidden" name="status" th:value="${formModel.status}" />
+      </div>
+
+      <div>
+        <input type="submit" value="新規追加" />
+      </div>
+    </form>
+  </body>
+</html>

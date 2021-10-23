@@ -1,6 +1,7 @@
 package com.example.todoapp.controller;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -79,6 +81,40 @@ public class TaskController {
   public ModelAndView deleteContent(@PathVariable("id") Integer id) {
     // タスクをテーブルから削除
     taskService.deleteTask(id);
+
+    return new ModelAndView("redirect:/");
+  }
+
+  // タスクの編集画面
+  @GetMapping("/edit/{id}")
+  public ModelAndView editContent(@PathVariable("id") Integer id) {
+    ModelAndView mav = new ModelAndView();
+    // 編集するタスクを取得
+    Task task = taskService.editTask(id);
+    // task.limit_dateを文字列に変換
+    SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    String limitDate = DateFormat.format(task.getLimit_date());
+    limitDate = limitDate.replace(" ", "T");
+
+    mav.setViewName("/edit");
+    mav.addObject("limitDate", limitDate);
+    mav.addObject("formModel", task);
+
+    return mav;
+  }
+
+  // タスクの編集処理
+  @PutMapping("/update/{id}")
+  public ModelAndView updateContent(@PathVariable("id") Integer id, @ModelAttribute("formModel") Task task, 
+          @RequestParam("limit") String limit) {
+    // パラメータから送られてくる値をTimestamp型に変換するための処理
+    String limitDateFormat = limit + ":00";
+    String limitDateReplace = limitDateFormat.replace("T", " ");
+    Timestamp limitDate = Timestamp.valueOf(limitDateReplace);
+    // entityにlimit_dateをセット
+    task.setLimit_date(limitDate);
+    // タスクをテーブルに格納
+    taskService.saveTask(task);
 
     return new ModelAndView("redirect:/");
   }
