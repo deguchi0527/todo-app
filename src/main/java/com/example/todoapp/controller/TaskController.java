@@ -1,6 +1,7 @@
 package com.example.todoapp.controller;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.todoapp.entity.Task;
@@ -25,8 +26,14 @@ public class TaskController {
   public ModelAndView top() {
     ModelAndView mav = new ModelAndView();
     List<Task> tasks = taskService.findAllTask();
+    List<String> statusArray = new ArrayList<>();
+    statusArray.add("選択なし");
+    statusArray.add("完了");
+    statusArray.add("ステイ中");
+    statusArray.add("実行中");
     mav.setViewName("/top");
     mav.addObject("tasks", tasks);
+    mav.addObject("statusArray", statusArray);
 
     return mav;
   }
@@ -37,8 +44,13 @@ public class TaskController {
     ModelAndView mav = new ModelAndView();
     // form用の空のentityを準備
     Task task = new Task();
+    List<String> statusArray = new ArrayList<>();
+    statusArray.add("完了");
+    statusArray.add("ステイ中");
+    statusArray.add("実行中");
     mav.setViewName("/new");
     mav.addObject("formModel", task);
+    mav.addObject("statusArray", statusArray);
 
     return mav;
   }
