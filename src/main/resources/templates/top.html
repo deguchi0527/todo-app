@@ -11,6 +11,9 @@
       <p th:text="${task.id}"></p>
       <p th:text="${task.content}"></p>
       <p th:text="${task.limit_date}"></p>
+      <form th:method="delete" th:action="@{/delete/{id}(id=${task.id})}">
+        <input type="submit" value="削除" />
+      </form>
     </div>
   </body>
 </html>
