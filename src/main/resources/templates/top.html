@@ -1,1 +1,16 @@
-<h1>テスト</h1>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ToDoApp</title>
+  </head>
+  <body>
+    <a href="/new"><button type="button">タスク追加</button></a>
+    
+    <div th:each="task : ${tasks}">
+      <p th:text="${task.id}"></p>
+      <p th:text="${task.content}"></p>
+      <p th:text="${task.limit_date}"></p>
+    </div>
+  </body>
+</html>
