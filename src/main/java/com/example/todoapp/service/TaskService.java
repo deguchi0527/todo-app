@@ -28,4 +28,11 @@ public class TaskService {
   public void deleteTask(Integer id) {
     taskRepository.deleteById(id);
   }
+
+  // タスクを1件取得
+  public Task editTask(Integer id) {
+    Task task = (Task) taskRepository.findById(id).orElse(null);
+
+    return task;
+  }
 }

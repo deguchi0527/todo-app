@@ -1,6 +1,7 @@
 package com.example.todoapp.controller;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,5 +82,23 @@ public class TaskController {
     taskService.deleteTask(id);
 
     return new ModelAndView("redirect:/");
+  }
+
+  // タスクの編集画面
+  @GetMapping("/edit/{id}")
+  public ModelAndView editContent(@PathVariable("id") Integer id) {
+    ModelAndView mav = new ModelAndView();
+    // 編集するタスクを取得
+    Task task = taskService.editTask(id);
+    // task.limit_dateを文字列に変換
+    SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    String limitDate = DateFormat.format(task.getLimit_date());
+    limitDate = limitDate.replace(" ", "T");
+
+    mav.setViewName("/edit");
+    mav.addObject("limitDate", limitDate);
+    mav.addObject("formModel", task);
+
+    return mav;
   }
 }
