@@ -105,8 +105,8 @@ public class TaskController {
 
   // タスクの編集処理
   @PutMapping("/update/{id}")
-  public ModelAndView updateContent(@PathVariable("id") Integer id, @ModelAttribute("formModel") Task task, 
-          @RequestParam("limit") String limit) {
+  public ModelAndView updateContent(@PathVariable("id") Integer id, @ModelAttribute("formModel") Task task,
+      @RequestParam("limit") String limit) {
     // パラメータから送られてくる値をTimestamp型に変換するための処理
     String limitDateFormat = limit + ":00";
     String limitDateReplace = limitDateFormat.replace("T", " ");
@@ -117,5 +117,30 @@ public class TaskController {
     taskService.saveTask(task);
 
     return new ModelAndView("redirect:/");
+  }
+
+  // タスクの絞込処理
+  @GetMapping("/search")
+  public ModelAndView searchContent(@RequestParam("start") String start, @RequestParam("end") String end,
+      @RequestParam("content") String content, @RequestParam("status") String statusValue) {
+    ModelAndView mav = new ModelAndView();
+    // タスクの絞込
+    List<Task> tasks = taskService.searchTask(start, end, content, statusValue);
+    // ステータスの表示
+    List<String> statusArray = new ArrayList<>();
+    statusArray.add("選択なし");
+    statusArray.add("完了");
+    statusArray.add("ステイ中");
+    statusArray.add("実行中");
+
+    mav.setViewName("/top");
+    mav.addObject("tasks", tasks);
+    mav.addObject("statusArray", statusArray);
+    mav.addObject("start", start);
+    mav.addObject("end", end);
+    mav.addObject("content", content);
+    mav.addObject("statusValue", statusValue);
+
+    return mav;
   }
 }
