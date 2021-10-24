@@ -143,4 +143,21 @@ public class TaskController {
 
     return mav;
   }
+
+  // タスクのステータス変更処理
+  @PutMapping("/status/{id}")
+  public ModelAndView statusContent(@PathVariable("id") Integer id) {
+    // 編集するタスクを取得
+    Task task = taskService.editTask(id);
+    // ステータスの変更
+    if ((task.getStatus() + 1) % 3 != 0) {
+      task.setStatus((task.getStatus() + 1) % 3);
+    } else {
+      task.setStatus(3);
+    }
+    // タスクをテーブルに格納
+    taskService.saveTask(task);
+
+    return new ModelAndView("redirect:/");
+  }
 }
