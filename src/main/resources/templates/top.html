@@ -25,6 +25,13 @@
       <p th:text="${task.id}"></p>
       <p th:text="${task.content}"></p>
       <p th:text="${task.limit_date}"></p>
+      <div th:switch="${task.status}">
+        <form th:method="put" th:action="@{/status/{id}(id=${task.id})}">
+          <input th:case="1" type="submit" th:value="完了" />
+          <input th:case="2" type="submit" th:value="ステイ中" />
+          <input th:case="3" type="submit" th:value="実行中" />
+        </form>
+      </div>
       <form th:method="delete" th:action="@{/delete/{id}(id=${task.id})}">
         <input type="submit" value="削除" />
       </form>
