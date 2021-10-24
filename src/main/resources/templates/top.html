@@ -6,6 +6,20 @@
   </head>
   <body>
     <a href="/new"><button type="button">タスク追加</button></a>
+
+    <form th:method="get" action="/search">
+      <div>
+        <p>タスクの内容:<input type="text" name="content" th:value="${content}" /></p>
+        <p>日付:<input type="date" name="start" th:value="${start}" />〜<input type="date" name="end" th:value="${end}" /></p>
+        <p>ステータス:
+          <select name="status">
+            <option th:each="status, statusArray : ${statusArray}" th:value="${statusArray.index}" 
+            th:text="${status}" th:selected="${statusArray.index} == ${statusValue}"></option>
+          </select>
+        </p>
+        <p><input type="submit" value="絞り込み" /></p>
+      </div>
+    </form> 
     
     <div th:each="task : ${tasks}">
       <p th:text="${task.id}"></p>
